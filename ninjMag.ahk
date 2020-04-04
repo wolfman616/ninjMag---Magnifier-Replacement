@@ -1,1 +1,0 @@
-C:/script/AHK/Working/magnifier1 (2).ahk
