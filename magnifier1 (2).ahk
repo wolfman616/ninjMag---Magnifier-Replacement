@@ -14,6 +14,7 @@ FPS = 4
 RefreshInterval:=(1000/FPS)
 Antialiasing = 0
 Gui +AlwaysOnTop +Resize +ToolWindow
+
 ;Gui, Add, Slider, vMySlider, 1
 Rx = 128 									; half vertical/horizontal side of ninjMag window
 Ry = 128
@@ -42,7 +43,10 @@ GuiClose:
 		{
 		Gui Show, % "w" 2*Rx "h" 2*Ry "x3570 y905", ninjMag
 		WinGet ninjMagID, id, ninjMag
-		WinSet Transparent, 254, ninjMag ; makes the window invisible to magnification
+		WinSet, Style, 0x10000000,ninjMag 
+		WinSet, ExStyle, 0x00000000, ninjMag
+WinSet Transparent, 0, ninjMag 
+		WinSet Transparent, 255, ninjMag 
 		WinGet PrintSourceID, ID
 		hdd_frame := DllCall("GetDC", UInt, PrintSourceID)
 		hdc_frame := DllCall("GetDC", UInt, ninjMagID)
