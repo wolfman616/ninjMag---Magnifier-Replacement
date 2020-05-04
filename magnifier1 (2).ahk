@@ -41,7 +41,7 @@ GuiClose:
 		}
    else
 		{
-		Gui Show, % "w" 2*Rx "h" 2*Ry "x3570 y905", ninjMag
+		Gui Show, % "w" 2*Rx "h" 2*Ry "x" A_ScreenWidth-275 "y" A_ScreenHeight-300, ninjMag    
 		WinGet ninjMagID, id, ninjMag
 		WinSet, Style, 0x10000000,ninjMag 
 		WinSet, ExStyle, 0x00000000, ninjMag
