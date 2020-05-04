@@ -23,13 +23,14 @@ Zy := Ry/Zoom
 OnExit GuiClose 
 
 #x::
-GuiClose:
-	{
-	DllCall("gdi32.dll\DeleteDC", UInt,hdc_frame )
-	DllCall("gdi32.dll\DeleteDC", UInt,hdd_frame )
-	RegWrite, REG_SZ, HKEY_LOCAL_MACHINE\SOFTWARE\ninjMag, LastScaleFactor, %Zoom%
-	ExitApp
-	}
+	GuiClose:
+		{
+		DllCall("gdi32.dll\DeleteDC", UInt,hdc_frame )
+		DllCall("gdi32.dll\DeleteDC", UInt,hdd_frame )
+		RegWrite, REG_SZ, HKEY_LOCAL_MACHINE\SOFTWARE\ninjMag, LastScaleFactor, %Zoom%
+		ExitApp
+		}
+	Return
 
 #M::
    if Paused = 
@@ -45,7 +46,7 @@ GuiClose:
 		WinGet ninjMagID, id, ninjMag
 		WinSet, Style, 0x10000000,ninjMag 
 		WinSet, ExStyle, 0x00000000, ninjMag
-WinSet Transparent, 0, ninjMag 
+		WinSet Transparent, 0, ninjMag 
 		WinSet Transparent, 255, ninjMag 
 		WinGet PrintSourceID, ID
 		hdd_frame := DllCall("GetDC", UInt, PrintSourceID)
@@ -54,6 +55,7 @@ WinSet Transparent, 0, ninjMag
 		Paused =
 		}
 SetTimer Repaint, %RefreshInterval%  
+Return
 
 #if WinExist("ninjMag") 	; Conditional pass through
 	{
@@ -69,11 +71,11 @@ SetTimer Repaint, %RefreshInterval%
 		Zy := Ry/zoom
 	Return
 	}
-if Zoom	
-MouseGetPos, x, y
+	if Zoom	
+		MouseGetPos, x, y
 		ToolTip, MAG: %Zoom% Percent
 		Sleep, 1000
- 	
+		Return
     
 Repaint:
 	{
@@ -83,7 +85,7 @@ Repaint:
 	WinMove Frame,,%xz%, %yz%, % 2*Zx, % 2*Zy  ;*****WILL SCOPE
 	DllCall("gdi32.dll\StretchBlt", UInt,hdc_frame, Int,0, Int,0, Int,2*Rx, Int,2*Ry, UInt,hdd_frame, UInt,xz, UInt,yz, Int,2*Zx, Int,2*Zy, UInt,0xCC0020)        
 	; SRCCOPY
-Return
+	Return
 	}
 
 GuiSize:
