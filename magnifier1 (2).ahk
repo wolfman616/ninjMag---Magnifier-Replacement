@@ -97,9 +97,9 @@ Return
 
 In(x,a,b) 
 	{ 
-     IfLess x,%a%, Return a
-   IfLess b,%x%, Return b
-   Return x
+	IfLess x,%a%, Return a
+	IfLess b,%x%, Return b
+	Return x
 	}
 
 
