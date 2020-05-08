@@ -1,25 +1,25 @@
-﻿SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+﻿SetWorkingDir %A_ScriptDir% 
 #NoEnv
 #SingleInstance force
 #Persistent
 SendMode Input  
 SetBatchLines -1
-Menu, Tray, Icon, search_32.png
+Menu, Tray, NoIcon
+;#NoTrayIcon
+Gui +AlwaysOnTop +Resize +disabled 
 CoordMode Mouse, Screen
-;RegRead, LastScaleFactor, HKEY_LOCAL_MACHINE\SOFTWARE\ninjMag, LastScaleFactor
-;Zoom:=LastScaleFactor
-Zoom=3
+IniRead, LastScaleFactor, zoom.ini, LastScaleFactor, LastScaleFactor , 4
+Zoom:=LastScaleFactor
 Paused =1
 FPS = 4
 RefreshInterval:=(1000/FPS)
 Antialiasing = 0
-Gui +AlwaysOnTop +Resize +ToolWindow
 
-;Gui, Add, Slider, vMySlider, 1
 Rx = 128 									; half vertical/horizontal side of ninjMag window
 Ry = 128
-Zx := Rx/Zoom 							; frame x/y size
+Zx := Rx/Zoom 							
 Zy := Ry/Zoom
+
 OnExit GuiClose 
 
 #x::
@@ -27,25 +27,27 @@ OnExit GuiClose
 		{
 		DllCall("gdi32.dll\DeleteDC", UInt,hdc_frame )
 		DllCall("gdi32.dll\DeleteDC", UInt,hdd_frame )
-		RegWrite, REG_SZ, HKEY_LOCAL_MACHINE\SOFTWARE\ninjMag, LastScaleFactor, %Zoom%
-		ExitApp
+		IniWrite, %Zoom% , zoom.ini , LastScaleFactor, LastScaleFactor
+		exitapp
 		}
-	Return
-
+	
 #M::
    if Paused = 
 		{ 
+		Menu, Tray, NoIcon
 		Gui, 2:Hide 
-        Gui, Hide 
-        SetTimer, Repaint, Off
-        Paused = 1
+		Gui, Hide 
+		SetTimer, Repaint, Off
+		Paused = 1
 		}
    else
 		{
-		Gui Show, % "w" 2*Rx "h" 2*Ry "x" A_ScreenWidth-275 "y" A_ScreenHeight-300, ninjMag    
+		Menu, Tray, Icon
+		Menu, Tray, Icon, search_32.ico
+		Gui Show, % "w" 2*Rx "h" 2*Ry "x" A_ScreenWidth-275 "y" A_ScreenHeight-300 NoActivate, ninjMag    ;bottom right
 		WinGet ninjMagID, id, ninjMag
 		WinSet, Style, 0x10000000,ninjMag 
-		WinSet, ExStyle, 0x00000000, ninjMag
+		WinSet, ExStyle, 0x08000008, ninjMag
 		WinSet Transparent, 0, ninjMag 
 		WinSet Transparent, 255, ninjMag 
 		WinGet PrintSourceID, ID
@@ -54,8 +56,8 @@ OnExit GuiClose
 		SetTimer, Repaint, %RefreshInterval%
 		Paused =
 		}
-SetTimer Repaint, %RefreshInterval%  
-Return
+	SetTimer Repaint, %RefreshInterval%  
+	Return
 
 #if WinExist("ninjMag") 	; Conditional pass through
 	{
@@ -73,16 +75,16 @@ Return
 	}
 	if Zoom	
 		MouseGetPos, x, y
-		ToolTip, MAG: %Zoom% Percent
-		Sleep, 1000
-		Return
+	ToolTip, MAG: %Zoom% Percent
+	Sleep, 1000
+	Return
     
 Repaint:
 	{
 	MouseGetPos x, y
-	xz := In(x-Zx-6,0,A_ScreenWidth-2*Zx) ; keep the frame on screen
+	xz := In(x-Zx-6,0,A_ScreenWidth-2*Zx) ; keep  frame on screen
 	yz := In(y-Zy-6,0,A_ScreenHeight-2*Zy) ; 
-	WinMove Frame,,%xz%, %yz%, % 2*Zx, % 2*Zy  ;*****WILL SCOPE
+	WinMove Frame,,%xz%, %yz%, % 2*Zx, % 2*Zy 
 	DllCall("gdi32.dll\StretchBlt", UInt,hdc_frame, Int,0, Int,0, Int,2*Rx, Int,2*Ry, UInt,hdd_frame, UInt,xz, UInt,yz, Int,2*Zx, Int,2*Zy, UInt,0xCC0020)        
 	; SRCCOPY
 	Return
