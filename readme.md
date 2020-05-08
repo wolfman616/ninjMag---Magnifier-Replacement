@@ -1,5 +1,5 @@
 Magnifier Repalcement 
 
-replaces Windows M - no Gui
+Replaces Windows M - no Gui / Taskband item 
 
 Zoom factor : Ctrl+Shift+ Mouse-Wheel or Arrow keys 
