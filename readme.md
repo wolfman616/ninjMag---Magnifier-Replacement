@@ -1,7 +1,9 @@
-Magnifier Repalcement 
+Minimalist Magnifier Repalcement 
 
-Replaces Windows M - no Gui / Taskband item 
+activte = Windows M - no Gui / Taskband item 
 
 Zoom factor : Ctrl+Shift+ Mouse-Wheel or Arrow keys 
+fps setting, 
 
-compiled exe included
+bug 
+Entire process not present after mintes / hours, likely associated with no tray icon setup.
