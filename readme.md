@@ -1,7 +1,10 @@
+![Clipboarder 2022 10 11-002](https://user-images.githubusercontent.com/62726599/194972265-d82bcf3e-7c12-49d7-a5cd-bbb16b85b181.jpg)
+
 Minimalist Magnifier Repalcement 
 
 Windows&M - toggle mag on and off
 Windows&B - Invert colour
+![Uploading Clipboarder.2022.10.11-002.jpg…]()
 
 Zoom factor : Ctrl+Shift+ Mouse-Wheel or Arrow keys 
 
