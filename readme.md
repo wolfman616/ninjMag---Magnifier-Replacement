@@ -1,14 +1,13 @@
-![Clipboarder 2022 10 11-002](https://user-images.githubusercontent.com/62726599/194972265-d82bcf3e-7c12-49d7-a5cd-bbb16b85b181.jpg)
-
+<img width="189" alt="Clipboarder 2022 11 03" src="https://user-images.githubusercontent.com/62726599/199727714-39beb5fd-b199-4b61-b725-59db11e64cf0.png">
 Minimalist Magnifier Repalcement 
 
 Windows&M - toggle mag on and off
+
 Windows&B - Invert colour
-![Uploading Clipboarder.2022.10.11-002.jpg…]()
 
 Zoom factor : Ctrl+Shift+ Mouse-Wheel or Arrow keys 
 
-fps can be capped, although it runs at a solid 100 FPS.  
+Cursor tracking on typing,psrtially implemented
 
 scaling locked in to whole factors, preserving pixel integrity whilst inspecting.
 
