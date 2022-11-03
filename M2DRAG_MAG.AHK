@@ -1,218 +1,257 @@
 ﻿#NoEnv
-#notrayicon
-;#include <GDI+>									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\GDI+_All.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\win_move.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\return.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\isint.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\msgb0x.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\Send_WMCOPYDATA.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\SendWM_COPYDATA.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\ico2hicon.ahk									;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\Open_ScriptDir.ahk									;	ninjMag by Matt Wolff
-Setcontroldelay -1								;	suggested to init from elevated script for hotkeys as below
-SetBatchLines -1								;	suggested to init from elevated script for hotkeys as below
+;#notrayicon ;#include <GDI+>
+#include C:\Script\AHK\- _ _ LiB\GDI+_All.ahk			;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\win_move.ahk			;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\return.ahk				;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\isint.ahk				;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\msgb0x.ahk				;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\Send_WMCOPYDATA.ahk	;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\SendWM_COPYDATA.ahk	;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\ico2hicon.ahk			;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\Open_ScriptDir.ahk		;	ninjMag by Matt Wolff
+#SingleInstance force			;	+#M::	Shif And M
+Setcontroldelay -1				;	suggested to init from elevated script for hotkeys as below
+SetBatchLines -1				;	suggested to init from elevated script for hotkeys as below
 SetWinDelay -1
-#SingleInstance force							;	+#M::	Shif And M
-ListLines, Off									;	run % Mag_Path,
-SendMode Input									;	return,
-;SetWorkingDir %A_ScriptDir%						;	2022.
-CoordMode Mouse, Screen
+ListLines,Off					;	run % Mag_Path,
+DetectHiddenWindows,On
+DetectHiddenText,	On
+SetTitleMatchMode,	2
+SetTitleMatchMode,	Slow
+SendMode,Input
+CoordMode,Mouse,Screen
 IniRead,LastScaleFactor,zoom.ini,LastScaleFactor,LastScaleFactor,4
 icondll:= "C:\Script\AHK\Z_MIDI_IN_OUT\icons.DLL"
-Img_UnC := "C:\Script\AHK\GDI\images\GDI_Raster_(899).png"
+Img_UnC:= "C:\Script\AHK\GDI\images\GDI_Raster_(899).png"
 menu,tray,noStandard
 menu,tray,Icon,	C:\Script\AHK\Working\search_32.ico
-menu,tray,add,	Open script location, Open_ScriptDir
+menu,tray,add,	Open script location,Open_ScriptDir
 menu,tray,icon,	Open script location,% icondll,7
-menu,tray,Add,	Inverted, invert,
-menu,tray,icon,	Inverted, C:\Icon\32\9047532_2.ico,,32
-menu,tray,Add,	TrayKillIcon, TrayKillIcon,
+menu,tray,Add,	Inverted,invert
+menu,tray,icon,	Inverted,C:\Icon\32\9047532_2.ico,,32
+menu,tray,Add,	TrayKillIcon,TrayKillIcon
 menu,tray,standard
 OnMessage(0x4a,"Receive_WM_COPYDATA")
-ONEXIT, DSTROY
 gosub,Varz
-
-; UIBAND Z PLACEMNT WITH AHK UiA 1.33	NinjMagiD := DllCall("CreateWindowInBand", "uint", 0, "str", "Autohotkey", "str", "title", "uint", 0, "int", 0, "int", 0, "int", 200, "int", 200, "ptr", 0, "ptr", 0, "ptr", 0, "ptr", 0, "int", ZBID_UIACCESS := 2, "ptr")
+optfollowcaret:= true
+; UIBAND Z PLACEMNT WITH AHK UiA 1.33+ +wa_topmost	NinjMagiD := DllCall("CreateWindowInBand", "uint", 0, "str", "Autohotkey", "str", "title", "uint", 0, "int", 0, "int", 0, "int", 200, "int", 200, "ptr", 0, "ptr", 0, "ptr", 0, "ptr", 0, "int", ZBID_UIACCESS := 2, "ptr")
+onexit, guifade_tst
 mouseGetPos,x,y
-OFFSet_	:=	(zoom *1.5)		;bodge to keep gui out of viewports gaze
+OFFSet_:= (zoom *1.5)
 
 Init_gui:
-Visible:= true
-gui,BackMain:	New,DPIScale +toolwindow +owner -SysMenu +AlwaysOnTop,
-gui,BackMain: 	+LastFound +HwndMainhWnd
-gui,BackMain:	-Caption
-gui,BackMain:	color,	000000
-winSet,		Transcolor,	000000
+Visible:= True
+gui,BackMain:	New,-DPIScale +toolwindow +owner -SysMenu +AlwaysOnTop ;+e0x20
+gui,BackMain: 	+LastFound +HwndMainhWnd -Caption +AlwaysOnTop 
+gui,BackMain:	color,99ccff
 winSet,Region,	0-0 W%MagSize% H%MagSize% R%MagSize%-%MagSize%,
-gui,BackMain: 	Show,na x-300 y-300 w%magsize% h%magsize%,;winset, transparent, 90+E0x80000
- 
-gui,pic: New,-DPIScale +hwndhpic +parentBackMain +E0x80000 +AlwaysOnTop +ToolWindow ; ,% "no_glass"
+gui,BackMain: 	Show,na x-300 y-300 w%magsize% h%magsize%
+gui,pic: New,-DPIScale +hwndhpic +parentBackMain +E0x80000 +AlwaysOnTop +ToolWindow
 	gui,pic:+LastFound -Caption -SysMenu +OwnDialogs
-	gui,pic: color,0f00f0	;	winset,transcolor,0f00f0
-
+	gui,pic: color,0f00f0
+gui,VP:new, +LastFound +HwndvphWnd -DPIScale -Caption -SysMenu +E0x20
+gui,VP:	color,000204
+winSet,	Transcolor,f00000
 gui,ss:new,	+LastFound -Caption +hwndsswnd +parentBackMain -SysMenu +OwnDialogs
-gui,ss:			color,	ff00ff ;
-winSet, 	Transcolor, ff00ff ;winSet,Style,	0x96000000;winSet,EXStyle,0x00200008;winset,Transcolor,0xEEAA99
-gui,lens: new, -Caption -DPIScale ; l+parentBackMain ;+E0x80000,
+gui,ss:	color,ff00ff
+winSet, Transcolor,ff00ff 
+gui,lens: new, -Caption -DPIScale +e0x20
 gui,lens:+LastFound +hWndNinjMagiD	+disabled +AlwaysOnTop -SysMenu +ToolWindow +owndialogs
-winSet,Region,	0-0 W%MagSize% H%MagSize% R%MagSize%-%MagSize%,
-winSet,Style,	0x5000000E
-winSet,EXStyle,	0x08000020
-gui,lens:		color,	000000 	;gui,BackMain : hide
-winset,		transcolor,	000000
-	winset,transparent,1,ahk_id %MainhWnd%
+winSet,Region,0-0 W%MagSize% H%MagSize% R%MagSize%-%MagSize%,
+gui,lens: color,800000
+winset,transcolor,000000
+winset,transparent,255,ahk_id %MainhWnd%
 (!Resize_complete? gsub("Region_set"))
 Init:
 mouseGetPos,x,y
 global OFFSet_:= Zoom*1.5
-;Initial_X:=	((x-271) +OFFSet_), Initial_Y:= ((y-271) +OFFSet_)
 DesktopDC:=	DllCall("GetDC","UInt",maindevicecontextblabla)
-moomin:=	DllCall("GetDC","UInt",MainhWnd)
 HDC_Frame:=	DllCall("GetDC","UInt",NinjMagiD)
+VP_Frame:=	DllCall("GetDC","UInt",vphwnd)
 
-if !Init_complete {		;Img_UnC := "C:\Script\AHK\GDI\images\GDI_Raster_(8).png"
-	pToken:= Gdip_Startup()	;	winset,transcolor, 0
+if !Init_complete {
+	pToken:= Gdip_Startup()
 	img_[(i>img_maxi? i:= 1 : i)]
 	mouseGetPos,x, y
-	_x_:=round(Area_offset+(x-magoffset))
-	_y_:=round(Area_offset+(y-magoffset))
+	_x_:= round(Area_offset+(x-magoffset))
+	_y_:= round(Area_offset+(y-magoffset))
 	(_x_<0? _x_:=0),			(_y_<0? _y_:=0)
 	(_y_<0.5*magsize? _x_-=30)
 	(_x_<0? ((_x_>(x-(0.5*magsize+(0.5*magsize/4))))
 	? (_x_:= abs(_x_ -30),		_y_:= abs(_y_))))
 	Zx:=Zy:= 300/Zoom,			ViewX:= 2*Zx, ViewY:= 2*Zy
 	(ViewY<0? ViewY:= 0),		(ViewX<0? ViewX:= 0)
-	ViewPos_X := x-zx,			ViewPos_Y := y-zy
+	ViewPos_X:= x-zx,			ViewPos_Y:= y-zy
 	(ViewPos_X<0? ViewPos_X=0),	(ViewPos_Y<0? ViewPos_Y=0)
-Initial_X:=_x_, Initial_Y_y_:=_y_
-	
+	Initial_X:=_x_, Initial_Y_y_:=_y_
 	Win_Move(MainhWnd, _x_, _y_, MagSize, MagSize ,"" ) ; SWP_NOZORDER + SWP_NOACTIVATE
-
-testmaskDC:= DllCall("GetDC","UInt",hpic)
-;;;	;gui,lens:show,x0 y0 w300 h300	;gui,lens:hide
-	mdc:= DCStuff(Img_UnC) 	;winset,transcolor,0,ahk_id %sswnd%
-	hSS_Frame:=	DllCall("GetDC","UInt",sswnd)	;vpp:= 	DllCall("GetDC", UInt, hpic)
-	bum:=0x0
-	gui,ss:		show,na x0 y0 w%magsize% h%magsize%,+lastfound
-	gui,pic:	show,na x0 y0 w%magsize% h%magsize%	
+	testmaskDC:= DllCall("GetDC","UInt",hpic)
+	mdc:= DCStuff(Img_UnC) 
+	hSS_Frame:=	DllCall("GetDC","UInt",sswnd)
+	fade_decr:= 0x0
+	gui,VP:		show,na x-150 y-150 w%ViewX% h%Viewy%
+	gui,ss:		show,na x0 y0 w%magsize% h%magsize%
+	gui,pic:	show,na x0 y0 w%magsize% h%magsize%
 	gui,ss:		hide
 	gui,pic:	hide
-	DllCall("UpdateLayeredWindow","Uint",ninjmagid,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-,		"Uint",mDC,"int64P",0,"Uint",0,"intP",1<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-;	Win_Move(NinjMagiD,150,100,300,"") ; SWP_NOZORDER + SWP_NOACTIVATE
+	DllCall("UpdateLayeredWindow","Uint",ninjmagid,"Uint",0,"Uint",0,"int64P",magsize|magsize<<32
+	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",1<<16|1<<24,"Uint",3) 
 	DllCall("gdi32.dll\SetStretchBltMode","Uptr",HDC_Frame,"UInt",3)
 	DllCall("gdi32.dll\SetStretchBltMode","Uptr",Hss_Frame,"UInt",3)
+	DllCall("gdi32.dll\SetStretchBltMode","Uptr",VP_Frame,"UInt",3)
 }
 
 Init_complete:= 1
-SETTIMER,KILL_SELF,-144000
+settimer,guiClose,-144000
 StartTime:= A_TickCount
-SetStretchBltMode(HDC_Frame, iStretchMode:=1)
-SetStretchBltMode(mdc, iStretchMode:=1)
-SetStretchBltMode(Hss_Frame, iStretchMode:=1)
-DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P"
-,magsize|magsize<<32,"Uint",mdc,"int64P",0,"Uint",0,"intP",0xFF<<16|1<<24,"Uint",2)
-
+SetStretchBltMode(HDC_Frame,iStretchMode:=1)
+SetStretchBltMode(mdc,iStretchMode:=1)
+SetStretchBltMode(Hss_Frame,iStretchMode:=1)
+SetStretchBltMode(vp_Frame,iStretchMode:=1)
+DllCall("UpdateLayeredWindow","Uint",vphwnd,"Uint",0,"Uint",0,"int64P"
+,	viewx|viewy<<32,"Uint",DesktopDC,"int64P",ViewPos_X,"Uint",y,"intP",1<<16|1<<24,"Uint",2)
+win_move(vphwnd,"","","","","NOSIZE,NOZORDER,NOACTIVATE,R,A")
+CaretXold:= A_CaretX,CaretYold:= A_CaretY
+ 
 loop {
-
-	
 	((toggling || Paused)? return())
 	(!Resize_complete? gsub("Region_set"))
-	SetWinDelay,-1
 	mouseGetPos,x, y
-	_x_:=round(Area_offset+(x-magoffset))
-	_y_:=round(Area_offset+(y-magoffset))
-	(_x_<0? _x_:=0),			(_y_<0? _y_:=0)
-	(_y_<0.5*magsize? _x_-=30)
-	(_x_<0? ((_x_>(x-(0.5*magsize+(0.5*magsize/4))))
-	? (_x_:= abs(_x_ -30),		_y_:= abs(_y_))))
-	Zx:=Zy:= 300/Zoom,			ViewX:= 2*Zx, ViewY:= 2*Zy
-	(ViewY<0? ViewY:= 0),		(ViewX<0? ViewX:= 0)
-	ViewPos_X := x-zx,			ViewPos_Y := y-zy
+
+	if !(CaretXold=A_CaretX && CaretYold=A_CaretY) {
+		if !(A_CaretX=0 || A_CaretX="")&&!(A_CaretY=0 || A_CaretY="") 
+		&& if A_timeidlemouse > 50 {
+		xold:= x, yold:= y, koons:= true
+		, mpos:= wingetpos(winexist("a"))
+		c_x:= mpos.x -80, c_y:= mpos.y -172
+}	}
+	_x_:= round((x -magoffset) +Area_offset), _y_:= round((y -magoffset) +Area_offset)
+	(_x_ < 0? _x_:= 0)
+	if ( _y_ < 0 ) {
+		_y_ = 0
+		if (_x_	> (x -(magsize +(magsize/3))))
+			_x_ := _x_ -30
+			if _x_	< 0
+				_x_ = 0
+	}
+	Zx:= Zy:= 300/Zoom, ViewX:= 2*Zx, ViewY:= 2*Zy
+	(ViewY<0? ViewY:= 0), (ViewX<0? ViewX:= 0)
 	(ViewPos_X<0? ViewPos_X=0),	(ViewPos_Y<0? ViewPos_Y=0)
-
-;SS_BITMAP:= 0xE,SS_ICON:= 0x3,STM_SETIMAGE:= 0x172,IMAGE_BITMAP:= 0x0,SRCCOPY:= 0x00CC0020,BLACKNESS:= 0x00000042,NOTSRCERASE:= 0x001100A6,NOTSRCCOPY:= 0x00330008,SRCERASE:= 0x00440328,DSTINVERT:= 0x00550009,PATINVERT:= 0x005A0049,SRCINVERT:= 0x00660046,SRCAND:= 0x008800C6,MERGEPAINT:= 0x00BB0226,MERGECOPY:= 0x00C000CA,SRCCOPY:= 0x00CC0020,SRCPAINT:= 0x00EE0086,PATCOPY:= 0x00F00021,PATPAINT:= 0x00FB0A09,WHITENESS:= 0x00FF0062,CAPTUREBLT:= 0x40000000,NOMIRRORBITMAP:= 0x80000000,
-
-	DllCall("gdi32.dll\StretchBlt",UInt,Hss_Frame,Int,0,Int,0,Int
-,	magsize,Int,magsize,UInt,DesktopDC,UInt
-,	ViewPos_X,UInt,ViewPos_Y,Int,ViewX,Int,ViewY,UInt,srccopy)
-;	BitBlt(m_Frame,0,0,MagSize,MagSize,mdc,0,0,srcerase )
-	;BitBlt(Hss_Frame, 0, 0, MagSize, MagSize, mdc, 0, 0,srcand^notsrccopy) ;srcand^mergecopy
- 	BitBlt(HDC_Frame, 0, 0, MagSize, MagSize, mdc, 0, 0, srccopy ) srcand^mergepaint
-	; Win_Move(sswnd, _x_, _y_, "", "", "" ) ; SWP_NOZORDER + SWP_NOACTIVATE
-	Win_Move(MainhWnd, _x_, _y_, MagSize MagSize "" ) ; SWP_NOZORDER + SWP_NOACTIVATE
-	if !cuntface {
+	if koons && optfollowcaret {
+	tt(a_priorkey "`n" a_timesincepriorkey)
+		CaretXold:= A_CaretX, 	CaretYold:= A_CaretY
+	, 	ViewPos_X:= c_x+A_CaretX,ViewPos_Y:= c_x+A_CaretY
+	} else,	ViewPos_X:= x-zx, 		ViewPos_Y:= y-zy
+	(!(x=xold || y=yold)? koons:= false)
+	SetWinDelay,-1
 	
+	; _x_:=round(Area_offset +(x-(magoffset *0.5))) -200 
+	; _y_:=round(Area_offset +(y-(magoffset *0.5))) -200
+	; (_x_<0? _x_:=0),		(_y_<0? _y_:= 0)
+	; (_y_<0.5*magsize? _x_-= 30)
+	; (_x_<0? ((_x_>(x-(0.5*magsize +(0.5*magsize/4))))
+	; ? (_x_:= abs(_x_ -30),	_y_:= abs(_y_))))
+
+;	SS_BITMAP:= 0xE,SS_ICON:= 0x3,STM_SETIMAGE:= 0x172,IMAGE_BITMAP:= 0x0,SRCCOPY:= 0x00CC0020,BLACKNESS:= 0x00000042,NOTSRCERASE:= 0x001100A6,NOTSRCCOPY:= 0x00330008,SRCERASE:= 0x00440328,DSTINVERT:= 0x00550009,PATINVERT:= 0x005A0049,SRCINVERT:= 0x00660046,SRCAND:= 0x008800C6,MERGEPAINT:= 0x00BB0226,MERGECOPY:= 0x00C000CA,SRCCOPY:= 0x00CC0020,SRCPAINT:= 0x00EE0086,PATCOPY:= 0x00F00021,PATPAINT:= 0x00FB0A09,WHITENESS:= 0x00FF0062,CAPTUREBLT:= 0x40000000,NOMIRRORBITMAP:= 0x80000000,
+;	DllCall("UpdateLayeredWindow","Uint",vphwnd,"Uint",0,"Uint",0,"int64P"
+;,viewx|viewy<<32,"Uint",DesktopDC,"int64P",ViewPos_X,"Uint",y,"intP",0xFF<<16|1<<24,"Uint",2)
+;	DllCall("UpdateLayeredWindow","Uint",vphwnd,"Uint",0,"Uint",0,"int64P"
+;,viewx|viewy<<32,"Uint",vp_Frame,"int64P",ViewPos_X,"Uint",y,"intP",0xFF<<16|1<<24,"Uint",2)
+
+;	DllCall("gdi32.dll\StretchBlt",UInt,vp_Frame,Int,ViewPos_X,Int,ViewPos_Y,Int
+;,	ViewX,Int,Viewy,UInt,DesktopDC,UInt)
+;	winSet,EXStyle,	+0x00200000, ahk_id %VPhwnd%
+	;DllCall("UpdateLayeredWindow","Uint",vphwnd,"Uint",0,"Uint",0,"int64P", ViewX|Viewy<<32
+
+	Win_Move(MainhWnd,_x_,_y_,MagSize,MagSize,"") ; SWP_NOZORDER + SWP_NOACTIVATE
+;,	"Uint",vp_Frame,"int64P",0,"Uint",0,"intP",0x8<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	;
+;;	winset transparent,1,ahk_id %MainhWnd%
+	BitBlt(vp_Frame,0,0,ViewX,Viewy,DesktopDC,ViewPos_X,ViewPos_y,srccopy)
+;;	winset transparent,254,ahk_id %MainhWnd%
+DllCall("gdi32.dll\StretchBlt","UInt",Hss_Frame,"Int",0,"Int",0,"Int"
+,	magsize,"Int",magsize,"UInt",vp_Frame,"UInt"
+,	0,"UInt",0,"Int",ViewX,"Int",ViewY,"UInt",srccopy)
+;	DllCall("UpdateLayeredWindow","Uint",MainhWnd,"Uint",0,"Uint",0,"int64P"
+; ,	magsize|magsize<<32,"Uint",DesktopDC,"int64P",500,"Uint",500,"intP",1<<16|1<<24,"Uint",2)
+; 	sleep,60
+
+	;BitBlt(vp_Frame,0,0,ViewX,Viewy,DesktopDC,ViewPos_X,ViewPos_y,srccopy)
+;	DllCall("UpdateLayeredWindow","Uint",MainhWnd,"Uint",0,"Uint",0,"int64P", ViewX|Viewy<<32
+;;	,	"Uint",vp_Frame,"int64P",0,"Uint",0,"intP",0x2<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	;
+;	winSet,EXStyle,	-0x00200000, ahk_id %VPhwnd%
+;	DllCall("UpdateLayeredWindow","Uint",vphwnd,"Uint",0,"Uint",0,"int64P", ViewX|Viewy<<32
+;	,	"Uint",vp_Frame,"int64P",0,"Uint",0,"intP",0xff<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	;	
+	;BitBlt(Hss_Frame,0,0,MagSize*2,MagSize*2,vp_Frame,0,0,srccopy )
+;	DllCall("UpdateLayeredWindow","Uint",MainhWnd,"Uint",0,"Uint",0,"int64P", ViewX|Viewy<<32
+;	,	"Uint",vp_Frame,"int64P",0,"Uint",0,"intP",0xff<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	;		;BitBlt(Hss_Frame, 0, 0, MagSize, MagSize, mdc, 0, 0,srcand^notsrccopy) ;srcand^mergecopy
+ 	;BitBlt(HDC_Frame, 0, 0, MagSize, MagSize, vp_Frame, 0, 0, srccopy ) srcand^mergepaint
+	; Win_Move(sswnd, _x_, _y_, "", "", "" ) ; SWP_NOZORDER + SWP_NOACTIVATE
+	;Win_Move(vphwnd, ViewPos_X, ViewPos_y, ViewX, ViewY, "" ) ; SWP_NOZORDER + SWP_NOACTIVATE
+
+	if !the_end {
 		gui,ss:		show,na x0 y0 w%magsize% h%magsize%
 		gui,pic:	show,na x0 y0 w%magsize% h%magsize%	
-			mouseGetPos,x, y
-	_x_:=round(Area_offset+(x-magoffset))
-	_y_:=round(Area_offset+(y-magoffset))
-	(_x_<0? _x_:=0),			(_y_<0? _y_:=0)
-	(_y_<0.5*magsize? _x_-=30)
-	(_x_<0? ((_x_>(x-(0.5*magsize+(0.5*magsize/4))))
-	? (_x_:= abs(_x_ -30),		_y_:= abs(_y_))))
-	Zx:=Zy:= 300/Zoom,			ViewX:= 2*Zx, ViewY:= 2*Zy
-	(ViewY<0? ViewY:= 0),		(ViewX<0? ViewX:= 0)
-	ViewPos_X := x-zx,			ViewPos_Y := y-zy
-	(ViewPos_X<0? ViewPos_X=0),	(ViewPos_Y<0? ViewPos_Y=0)
-		
-
+		mouseGetPos,x,y
+		; _x_:=round(Area_offset+(x-magoffset))
+		; _y_:=round(Area_offset+(y-magoffset))
+		; (_x_<0? _x_:=0),			(_y_<0? _y_:=0)
+		; (_y_<0.5*magsize? _x_-=30)
+		; (_x_<0? ((_x_>(x-(magsize+(0.5 *magsize*0.25))))
+		; ? (_x_:= abs(_x_ -30),		_y_:= abs(_y_))))
+		Zx:= Zy:= 300/Zoom,			ViewX:= 2*Zx, ViewY:= 2*Zy
+		(ViewY<0? ViewY:= 0),		(ViewX<0? ViewX:= 0)
+	;	ViewPos_X := x-zx,			ViewPos_Y := y-zy
+	;	(ViewPos_X<0? ViewPos_X=0),	(ViewPos_Y<0? ViewPos_Y=0)
 		DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",255<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	
-	bum:=1
-				winset transparent,%bum%,ahk_id %MainhWnd%
-	Win_Move(MainhWnd, _x_, _y_, MagSize MagSize "" ) ; SWP_NOZORDER + SWP_NOACTIVATE
-
-	loop 255 	{
-	
-
-			DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",Format("{:#x}",bum)<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY	
-			winset transparent,%bum%,ahk_id %MainhWnd%
-			DllCall("UpdateLayeredWindow","Uint",sswnd,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",Format("{:#x}",bum)<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	mouseGetPos,x, y
-	_x_:=Area_offset+(x-magoffset)
-	_y_:=Area_offset+(y-magoffset)
-	
-	Win_Move(MainhWnd, _x_, _y_, MagSize MagSize "" ) ; SWP_NOZORDER + SWP_NOACTIVATE	
-	bum++
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",255<<16|1<<24, "Uint", 2)
+		fade_decr:= 1
+		winset,transparent,%fade_decr%,ahk_id %MainhWnd%
+		Win_Move(MainhWnd,_x_,_y_,MagSize,MagSize,"") ; SWP_NOZORDER + SWP_NOACTIVATE
+		loop 255 {
+			DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P",magsize|magsize<<32
+		,	"Uint",mDC,"int64P",0,"Uint",0,"intP",Format("{:#x}",fade_decr)<<16|1<<24, "Uint", 2)
+			winset transparent,%fade_decr%,ahk_id %MainhWnd%
+			DllCall("UpdateLayeredWindow","Uint",sswnd,"Uint",0,"Uint",0,"int64P",magsize|magsize<<32
+		,	"Uint",mDC,"int64P",0,"Uint",0,"intP",Format("{:#x}",fade_decr)<<16|1<<24, "Uint", 3)
+			mouseGetPos,x, y ;_x_:=Area_offset+(x-magoffset), ;_y_:=Area_offset+(y-magoffset)
+			Win_Move(MainhWnd,_x_,_y_,MagSize,MagSize,"") ; SWP_NOZORDER + SWP_NOACTIVATE
+			fade_decr++
 		}
-	cuntface:=1
+	the_end:= 1
 	}
 }
 return,
 
 DCStuff(Img) {
 	global
-	pBitmap:= Gdip_CBitmapFromFile(Img), CURRENT_W:= Gdip_GetImage_W( pBitmap)
-	CURRENT_H:= Gdip_GetImage_H(pBitmap), pImage:= Gdip_CreateBMP(CURRENT_W*wscale:=1
-	, CURRENT_H *hscale:=1), G2:= Gdip_GfxFromImage(pImage)
+	pBitmap:= Gdip_CBitmapFromFile(Img), CURRENT_W:= Gdip_GetImage_W(pBitmap)
+	CURRENT_H:= Gdip_GetImage_H(pBitmap), pImage:= Gdip_CreateBMP(CURRENT_W*wscale:= 1
+	, CURRENT_H *hscale:= 1), G2:= Gdip_GfxFromImage(pImage)
 	Gdip_DrawImgfast(G2,pBitmap,0,0)
 	Gdip_Set_InterpolationMode(G2,1), Gdip_Set_SmoothingMode(G2,1), mDC:= Gdi_CreateDC(0)
-	mBM:=	Gdi_Create_DIB((mDC), CURRENT_W,CURRENT_H,32), oBM:= Gdi_Select_Obj(mDC, mBM)
+	mBM:=	Gdi_Create_DIB((mDC), CURRENT_W,CURRENT_H,32), oBM:= Gdi_Select_Obj(mDC,mBM)
 	pGFX:=	Gdip_Pgfx_From_HDC(mDC)
 	try,	Gdip_DrawImgRect(pGFX,pImage,0,0,CURRENT_W,CURRENT_H)
-		DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-,	"Uint",mDC,"int64P",0,"Uint",0,"intP",0xFF<<16|1<<24, "Uint", 2) ;msgbox % _nx " " _nY
-	return,MDC
+		DllCall("UpdateLayeredWindow","Uint",hpic,"Uint",0,"Uint",0,"int64P",magsize|magsize<<32
+,	"Uint",mDC,"int64P",0,"Uint",0,"intP",0xFF<<16|1<<24,"Uint",2)
+	return,mDC
 }
+
 gui(byref guiname="",byref command1="",byref command2="") {
-	global ; KUNAI:2022 ; (MW:2022)  ;KUNAI:2022 ; (MW:2022) 
-	( !command1 ? command1 := guiname : guiname := "_")
-	(  !guiname  ?  guiname := "_" : ("") )
-	gui,% guiname ": " command1 (!(command2="")?(,command2:="_"):(""))
+	global
+	( !command1? command1:= guiname : guiname:= "_")
+	(  !guiname?  guiname:= "_" : ("") )
+	gui,% guiname ": " command1 (!(command2="")?(,command2:="_") : (""))
 	return, 
 }
-t_t(TxT="",x:="",y="",dur="") {	;tooltip wrap can also be called with 1 or 2 params, guess which.
-listlines,off
+
+t_t(TxT="",x:="",y="",dur="") {
+	listlines,off
 	(TxT=""? TxT:= A_now)
 	if (x && !isint(x)) { ; allow2declare a_LocStr
 		isint(y)? (y? dur:= y) ; transpose potential dur arg
 		somethingElseThatMightBeDeclarableLater:= dur? dur : () 
-		switch	(tt_loc:= X)	{
+		switch (tt_loc:= X)	{
 			case "center" : x:=	(A_screenwidth*.5)-80,	y:= (A_screenheight*.5)-35
 			case "tray"	  : x:= A_screenwidth-10, 		y:=	45
 			case "!tray"  : x:=	A_screenwidth-10, 		y:= A_screenheight-10
@@ -229,33 +268,20 @@ listlines,off
 tooltip,
 return,
 
-; class tt {		  ; Like Tts in falling rain...
-	 ;         t  :=   ; This.Timer := ObjBindMethod(this, "Tick")
-	 ; i:=this.tt := this.Tick.Bind(this)
-	; coordMode mouse, screen
-	; coordMode Pixel, screen
-	; __New(ttt=1000) {
-		; this.count := tooltipsA
-		; this.t_o := ttt
-		 ; NUM="")  { ; tooltip function with a default t_o count of 400ms (t_o can be provided as UINT as 2nd param)
-			; num="")?
-				; (tooltips="")?(num:=1):(num:=tooltips++)
-; }
-
 ;~F15 & Mbutton::
 ;return,
 ;~F15 & Mbutton up::
 
-KILL_SELF:
-	menu, tray, NoIcon
- 	visible := false
-	toggling := ( Paused:= true )
-	gui, lens: hide
-	RETURN
+Cleanup:
+menu, tray, NoIcon
+visible := false
+toggling := ( Paused:= true )
+gui,lens: hide
+RETURN
 Region_set:
 sleep,100
 winSet, Region, 0-0 W%MagSize% H%MagSize% R%MagSize%-%MagSize%, ahk_id %NinjMagiD%
-Resize_complete := 1
+Resize_complete:= 1
 return,
 
 T_det:
@@ -272,6 +298,8 @@ visible:= !(toggling:= Paused:= true)
 return,
 
 guiClose:
+gui,ss:hide
+gui,BackMain:hide
 gsub("Clear_up_gdi") ; IniWrite,%Zoom%,zoom.ini,LastScaleFactor,LastScaleFactor
 exitapp,
 
@@ -280,8 +308,37 @@ DllCall("gdi32.dll\DeleteDC", UInt,HDC_Frame )
 DllCall("gdi32.dll\DeleteObject", UInt,HDC_Frame)
 DllCall("gdi32.dll\DeleteDC", UInt,DesktopDC )
 DllCall("gdi32.dll\DeleteObject", UInt,DesktopDC)
+exitapp
 return,
 
+guifade_tst: ;DllCall("SetParent","uint",hpic,"uint",MainhWnd) ;gui,ss: hide
+loop 255 	{		
+	winset transparent,%fade_decr%,ahk_id %MainhWnd%
+		DllCall("gdi32.dll\SetStretchBltMode","Uptr",HDC_Frame,"UInt",3)
+		DllCall("gdi32.dll\SetStretchBltMode","Uptr",Hss_Frame,"UInt",3)
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		sleep -1
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3) 
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		sleep -1
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		sleep -1
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3) 
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		sleep -1
+		DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
+	,	"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",fade_decr))<<16|1<<24, "Uint", 3)
+		fade_decr--
+		}
+exitapp,
 ;========================================================================================
 
 ~#B:: ;inverted colour toggle
@@ -346,7 +403,7 @@ return,
 ;return, ; #if; return,
 
 Receive_WM_COPYDATA( wParam, lParam ) {
-	StringAddress:= NumGet(lParam+(2*A_PtrSize))
+	StringAddress:= NumGet(lParam +(2*A_PtrSize))
 	CopyOfData:= StrGet(StringAddress)
 	gosub,% CopyOfData
 	return,True
@@ -374,27 +431,27 @@ Gdip_CBitmapFromFile(sFile, IconNumber:=1, IconSize:="", useICM:=0) {
 		VarSetCapacity(buf, BufSize, 0)
 		For eachSize, Size in StrSplit( Sizes, "|" )
 		{
-		DllCall("PrivateExtractIcons", "str", sFile, "int", IconNumber-1, "int", Size, "int", Size, "UPtr*", hIcon, "UPtr*", 0, "uint", 1, "uint", 0)
+		DllCall("PrivateExtractIcons","str",sFile,"int",IconNumber-1,"int",Size,"int"
+		,		Size,"UPtr*",hIcon,"UPtr*",0,"uint",1,"uint",0)
 		if !hIcon
-			continue
+			continue,
 
-		if !DllCall("GetIconInfo", "UPtr", hIcon, "UPtr", &buf)
+		if !DllCall("GetIconInfo", "UPtr", hIcon, "UPtr", &buf) {
+			DestroyIcon(hIcon)
+			continue,
+		}
+
+		hbmMask:= NumGet(buf,12 + (A_PtrSize - 4))
+		hbmColor:= NumGet(buf,12 + (A_PtrSize - 4) + A_PtrSize)
+		if !(hbmColor && DllCall("GetObject","UPtr",hbmColor,"int",BufSize,"UPtr",&buf))
 		{
 			DestroyIcon(hIcon)
 			continue
 		}
-
-		hbmMask	:= NumGet(buf, 12 + (A_PtrSize - 4))
-		hbmColor := NumGet(buf, 12 + (A_PtrSize - 4) + A_PtrSize)
-		if !(hbmColor && DllCall("GetObject", "UPtr", hbmColor, "int", BufSize, "UPtr", &buf))
-		{
-			DestroyIcon(hIcon)
-			continue
-		}
-		break
+		break,
 		}
 		if !hIcon
-		return -1
+		return,-1
 
 		Width := NumGet(buf, 4, "int")
 		Height := NumGet(buf, 8, "int")
@@ -408,7 +465,7 @@ Gdip_CBitmapFromFile(sFile, IconNumber:=1, IconSize:="", useICM:=0) {
 		DeleteDC(hdc)
 		DestroyIcon(hIcon)
 		buf := ""
-		return -2
+		return,-2
 		}
 
 		VarSetCapacity(dib, 104)
@@ -611,12 +668,14 @@ varz:	;=-------
 ;=======----
 Img_:= []
 loop,files,	C:\Script\AHK\GDI\images\*.png,
-global cuntface
+global the_end,CaretXold,CaretYold,xold,yold,koons
 	img_maxi:= a_index, img_.push(A_LoopFileLongPath)
 Area_offset:= (1.2 *(Zoom:= LastScaleFactor? LastScaleFactor : 8))
 RefreshInterval:=(1000/(FPS:=60)), MagOffset:=(48+(MagSize:=w:=h:=300))
 Numm:= 1, R_DPI:= A_ScreenDPI/96, aa:=1, icondll:= "C:\Script\AHK\Z_MIDI_IN_OUT\icons.DLL"
-l:="Antialias_on,Zoom,FPS,Zoom,MagSize,RefreshInterval,R_DPI,MagOffset,x,y,Area_offset,magoffset,NinjMagiD,MagSize,rim_,Init_complete,OFFSet_,w,h,mode1,Numm,visible,Paused,toggling,i,aa"
+fade_decr:= 255
+
+l:="Antialias_on,Zoom,FPS,Zoom,MagSize,RefreshInterval,R_DPI,MagOffset,x,y,Area_offset,magoffset,NinjMagiD,MagSize,rim_,Init_complete,OFFSet_,w,h,mode1,Numm,visible,Paused,toggling,i,aa,c_x,c_y,optfollowcaret,fade_decr"
 loop, parse,% l, `,
 	global (%A_loopfield%)
 global SS_BITMAP:= 0xE,SS_ICON:= 0x3,STM_SETIMAGE:= 0x172,IMAGE_BITMAP:= 0x0,SRCCOPY:= 0x00CC0020,BLACKNESS:= 0x00000042,NOTSRCERASE:= 0x001100A6,NOTSRCCOPY:= 0x00330008,SRCERASE:= 0x00440328,DSTINVERT:= 0x00550009,PATINVERT:= 0x005A0049,SRCINVERT:= 0x00660046,SRCAND:= 0x008800C6,MERGEPAINT:= 0x00BB0226,MERGECOPY:= 0x00C000CA,SRCCOPY:= 0x00CC0020,SRCPAINT:= 0x00EE0086,PATCOPY:= 0x00F00021,PATPAINT:= 0x00FB0A09,WHITENESS:= 0x00FF0062,CAPTUREBLT:= 0x40000000,NOMIRRORBITMAP:= 0x80000000,
@@ -634,42 +693,3 @@ blitmodes:= [], blitmodes:= [BLACKNESS, NOTSRCERASE, NOTSRCCOPY, SRCERASE, DSTIN
 
 return,
 Open_ScriptDir()
-DSTROY:
-bum:=255
-
-;DllCall("SetParent","uint",hpic,"uint",MainhWnd)
-;gui,ss: hide
-
-loop 255 	{		
-	winset transparent,%bum%,ahk_id %MainhWnd%
-
-			DllCall("gdi32.dll\SetStretchBltMode","Uptr",HDC_Frame,"UInt",3)
-			DllCall("gdi32.dll\SetStretchBltMode","Uptr",Hss_Frame,"UInt",3)
-			DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	
-			sleep -1
-			DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-				DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	
-			sleep -1
-			DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-				DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	
-			sleep -1
-			DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-				DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(ssds:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	
-			sleep -1
-			DllCall("UpdateLayeredWindow","Uint",hpic ,"Uint",0,"Uint",0,"int64P", magsize|magsize<<32
-	,		"Uint",mDC,"int64P",0,"Uint",0,"intP",(aaa:=Format("{:#x}",bum))<<16|1<<24, "Uint", 3) ;msgbox % _nx " " _nY
-	
-			bum--
-		}
-exitapp
