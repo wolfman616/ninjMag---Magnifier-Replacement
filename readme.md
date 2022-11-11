@@ -8,7 +8,7 @@ Windows&B - Invert colour
 
 Zoom factor : Ctrl+Shift+ Mouse-Wheel or Arrow keys 
 
-Cursor tracking on typing,psrtially implemented
+Cursor tracking upon typing,implemented in certain fields such as renaming and notepad++.
 
 scaling locked in to whole factors, preserving pixel integrity whilst inspecting.
 
