@@ -1,17 +1,17 @@
 ﻿#NoEnv
 ;#notrayicon ;#include <GDI+>
 #include C:\Script\AHK\- _ _ LiB\GDI+_All.ahk			;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\win_move.ahk			;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\return.ahk				;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\isint.ahk				;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\msgb0x.ahk				;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\Send_WMCOPYDATA.ahk	;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\SendWM_COPYDATA.ahk	;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\ico2hicon.ahk			;	ninjMag by Matt Wolff
-#include C:\Script\AHK\- _ _ LiB\Open_ScriptDir.ahk		;	ninjMag by Matt Wolff
+#include C:\Script\AHK\- _ _ LiB\win_move.ahk
+#include C:\Script\AHK\- _ _ LiB\return.ahk
+#include C:\Script\AHK\- _ _ LiB\isint.ahk
+#include C:\Script\AHK\- _ _ LiB\msgb0x.ahk
+#include C:\Script\AHK\- _ _ LiB\Send_WMCOPYDATA.ahk
+#include C:\Script\AHK\- _ _ LiB\SendWM_COPYDATA.ahk
+#include C:\Script\AHK\- _ _ LiB\ico2hicon.ahk	
+#include C:\Script\AHK\- _ _ LiB\Open_ScriptDir.ahk
 #SingleInstance force			;	+#M::	Shif And M
 Setcontroldelay -1				;	suggested to init from elevated script for hotkeys as below
-SetBatchLines -1				;	suggested to init from elevated script for hotkeys as below
+SetBatchLines -1				;	suggested to init from UIA script for uiband as below
 SetWinDelay -1
 ListLines,Off					;	run % Mag_Path,
 DetectHiddenWindows,On
