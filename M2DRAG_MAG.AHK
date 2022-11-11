@@ -1,5 +1,4 @@
 ﻿#NoEnv
-;#notrayicon ;#include <GDI+>
 #include C:\Script\AHK\- _ _ LiB\GDI+_All.ahk			;	ninjMag by Matt Wolff
 #include C:\Script\AHK\- _ _ LiB\win_move.ahk
 #include C:\Script\AHK\- _ _ LiB\msgb0x.ahk
@@ -119,7 +118,7 @@ loop {
 	if !(CaretXold=A_CaretX && CaretYold=A_CaretY) {
 		if !(A_CaretX=0 || A_CaretX="")&&!(A_CaretY=0 || A_CaretY="") 
 		&& if A_timeidlemouse > 50 {
-		xold:= x, yold:= y, koons:= true
+		xold:= x, yold:= y, icobz:= true
 		, mpos:= wingetpos(winexist("a"))
 		c_x:= mpos.x -80, c_y:= mpos.y -172
 }	}
@@ -135,12 +134,12 @@ loop {
 	Zx:= Zy:= 300/Zoom, ViewX:= 2*Zx, ViewY:= 2*Zy
 	(ViewY<0? ViewY:= 0), (ViewX<0? ViewX:= 0)
 	(ViewPos_X<0? ViewPos_X=0),	(ViewPos_Y<0? ViewPos_Y=0)
-	if koons && optfollowcaret {
-	tt(a_priorkey "`n" a_timesincepriorkey)
+	if icobz && optfollowcaret {
+	;tt(a_priorkey "`n" a_timesincepriorkey)
 		CaretXold:= A_CaretX, 	CaretYold:= A_CaretY
 	, 	ViewPos_X:= c_x+A_CaretX,ViewPos_Y:= c_x+A_CaretY
 	} else,	ViewPos_X:= x-zx, 		ViewPos_Y:= y-zy
-	(!(x=xold || y=yold)? koons:= false)
+	(!(x=xold || y=yold)? icobz:= false)
 	SetWinDelay,-1
 	
 	; _x_:=round(Area_offset +(x-(magoffset *0.5))) -200 
@@ -676,7 +675,7 @@ varz:	;=-------
 ;=======----
 Img_:= []
 loop,files,	C:\Script\AHK\GDI\images\*.png,
-global the_end,CaretXold,CaretYold,xold,yold,koons
+global the_end,CaretXold,CaretYold,xold,yold,icobz
 	img_maxi:= a_index, img_.push(A_LoopFileLongPath)
 Area_offset:= (1.2 *(Zoom:= LastScaleFactor? LastScaleFactor : 8))
 RefreshInterval:=(1000/(FPS:=60)), MagOffset:=(48+(MagSize:=w:=h:=300))
