@@ -2,8 +2,6 @@
 ;#notrayicon ;#include <GDI+>
 #include C:\Script\AHK\- _ _ LiB\GDI+_All.ahk			;	ninjMag by Matt Wolff
 #include C:\Script\AHK\- _ _ LiB\win_move.ahk
-#include C:\Script\AHK\- _ _ LiB\return.ahk
-#include C:\Script\AHK\- _ _ LiB\isint.ahk
 #include C:\Script\AHK\- _ _ LiB\msgb0x.ahk
 #include C:\Script\AHK\- _ _ LiB\Send_WMCOPYDATA.ahk
 #include C:\Script\AHK\- _ _ LiB\SendWM_COPYDATA.ahk
@@ -291,6 +289,16 @@ if (ElapsedTime:= A_TickCount -StartTime)>1000
 			Paused:= 1, Resize_complete:= False
 			,gui("lens","Hide"), toggling:= True ;gui,2:Hide
 return,
+
+isint(var) {
+	if var is integer
+		 return,1
+	else,return,0
+}
+
+return() {
+	exit,
+}
 
 TrayKillIcon:
 menu,tray,NoIcon
