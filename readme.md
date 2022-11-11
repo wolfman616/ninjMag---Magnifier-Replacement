@@ -1,4 +1,5 @@
-<img width="189" alt="Clipboarder 2022 11 03" src="https://user-images.githubusercontent.com/62726599/199727714-39beb5fd-b199-4b61-b725-59db11e64cf0.png">
+<img width="189" alt="Clipboarder 2022 11 03" src="https://user-images.githubusercontent.com/62726599/199727714-39beb5fd-b199-4b61-b725-59db11e64cf0.png"><img width="164" alt="Clipboarder 2022 11 11-002" src="https://user-images.githubusercontent.com/62726599/201353399-a51b8e54-33a9-4f1c-9098-14a5d1fe333e.png">
+
 Minimalist Magnifier Repalcement 
 
 Windows&M - toggle mag on and off
